@@ -48,11 +48,41 @@ ul.reportes li:first-child { border-top: 0; }
 .periodo { font-weight: 600; }
 .corte, .peso { font-size: .82rem; color: var(--tinta-3); }
 .marca-version {
-  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em;
-  background: var(--malla); color: var(--tinta-2);
-  border-radius: 999px; padding: .1rem .55rem;
+  font-size: .7rem; text-transform: uppercase; letter-spacing: .04em;
+  background: var(--malla); color: var(--tinta-2); white-space: nowrap;
+  border-radius: 999px; padding: .15rem .6rem; margin-left: .6rem;
+  vertical-align: .1em;
 }
 .vigente { background: var(--acento); color: var(--acento-tinta); }
+
+/* Índice de una serie: un bloque por periodo, dentro sus cortes. */
+.periodo-bloque {
+  background: var(--superficie); border: 1px solid var(--borde);
+  border-radius: 10px; padding: 1.1rem 1.4rem 1.3rem; margin-bottom: 1rem;
+}
+.periodo-bloque h3 {
+  margin: 0 0 .5rem; font-size: 1.05rem;
+  padding-bottom: .5rem; border-bottom: 1px solid var(--malla);
+}
+ul.versiones { list-style: none; margin: 0; padding: 0; }
+.version { padding: .7rem 0; border-top: 1px solid var(--malla); }
+.version:first-child { border-top: 0; }
+.enlace-version {
+  font-weight: 600; text-decoration: none;
+  display: inline-flex; align-items: center; gap: .45rem;
+}
+.enlace-version:hover { text-decoration: underline; }
+.version:not(.es-vigente) .enlace-version { font-weight: 500; color: var(--tinta-2); }
+.detalles { margin: .2rem 0 0; font-size: .82rem; color: var(--tinta-3); }
+.nota-versiones {
+  margin-top: .9rem; padding-top: .8rem; border-top: 1px dashed var(--malla);
+  max-width: 44rem;
+}
+.nota-pie { margin-top: 2rem; font-size: .84rem; color: var(--tinta-2); }
+code {
+  font-size: .88em; background: var(--malla); color: var(--tinta-1);
+  border-radius: 4px; padding: .08em .35em;
+}
 table { border-collapse: collapse; width: 100%; font-size: .9rem; }
 td, th { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--malla); }
 th { color: var(--tinta-2); font-weight: 600; }
