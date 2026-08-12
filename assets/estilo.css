@@ -1,6 +1,10 @@
 :root {
   --fondo: #f9f9f7; --superficie: #fcfcfb;
-  --tinta-1: #0b0b0b; --tinta-2: #52514e; --tinta-3: #898781;
+  /* --tinta-3 es #736f68 y no el #898781 del reporte: aquel da 3.50:1
+     sobre este fondo y no llega al 4.5:1 que exige WCAG AA. Este es el
+     gris más claro de la misma familia que sí cumple (4.87:1), para no
+     perder el tono discreto de los metadatos. */
+  --tinta-1: #0b0b0b; --tinta-2: #52514e; --tinta-3: #736f68;
   --malla: #e1e0d9; --borde: rgba(11,11,11,0.10);
   --acento: #033f63; --acento-tinta: #ffffff;
   color-scheme: light;
@@ -15,6 +19,14 @@
   }
 }
 * { box-sizing: border-box; }
+/* Enlace de salto: invisible hasta que se tabula, que es cuando sirve. */
+.salto {
+  position: absolute; left: -9999px; top: 0; z-index: 10;
+  background: var(--acento); color: var(--acento-tinta);
+  padding: .6rem 1rem; border-radius: 0 0 6px 0; text-decoration: none;
+}
+.salto:focus { left: 0; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
 body {
   margin: 0; background: var(--fondo); color: var(--tinta-1);
   font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
@@ -79,6 +91,24 @@ ul.versiones { list-style: none; margin: 0; padding: 0; }
   max-width: 44rem;
 }
 .nota-pie { margin-top: 2rem; font-size: .84rem; color: var(--tinta-2); }
+
+/* Agrupación por año. <details> es nativo: sin JavaScript, y el buscador
+   sí indexa el contenido plegado. */
+details.anio { margin-bottom: 1rem; }
+details.anio > summary {
+  cursor: pointer; list-style: none; padding: .6rem .2rem;
+  border-bottom: 1px solid var(--malla);
+  display: flex; align-items: baseline; gap: .75rem;
+}
+details.anio > summary::-webkit-details-marker { display: none; }
+details.anio > summary::before {
+  content: "▸"; color: var(--tinta-3); font-size: .8em;
+}
+details.anio[open] > summary::before { content: "▾"; }
+details.anio > summary:hover .anio-titulo { text-decoration: underline; }
+.anio-titulo { font-weight: 600; font-size: 1.05rem; }
+.anio-cuenta { font-size: .82rem; color: var(--tinta-3); }
+details.anio > .periodo-bloque:first-of-type { margin-top: 1rem; }
 code {
   font-size: .88em; background: var(--malla); color: var(--tinta-1);
   border-radius: 4px; padding: .08em .35em;

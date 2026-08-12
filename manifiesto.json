@@ -1,6 +1,6 @@
 {
   "esquema": 1,
-  "generado": "2026-08-12T15:55:06",
+  "generado": "2026-08-12T17:03:56",
   "entradas": [
     {
       "id": "siniestralidad/2026-01-01_2026-06-30/2026-08-11",
@@ -23,15 +23,20 @@
       "municipio": "VALLEDUPAR",
       "modulo": "publico",
       "ruta": "siniestralidad/2026-01-01_2026-06-30/2026-08-11.html",
-      "origen": "2026-08-11_presentacion-siniestralidad-2026-01-01_2026-06-30-publico.html",
-      "sha256": "0b5dcfc5bfbcc0a3bb2afd370baaacc532194584b2111ef9116cef16eccc009e",
-      "bytes": 487368,
+      "sha256": "fe94cc827cc95dd4e17c48eaee36e79a3ae6657b41857d59ef280c1e87d58d66",
+      "bytes": 487604,
       "generador": "presentacion/1",
-      "generado": "2026-08-12 15:31",
-      "publicado": "2026-08-12T15:32:58",
-      "revision": 1,
-      "revisiones": [],
-      "comando": "python -m arcgis_manage.cli publicar --archivo 2026-08-11_presentacion-siniestralidad-2026-01-01_2026-06-30-publico.html --publico",
+      "generado": "2026-08-12 17:00",
+      "publicado": "2026-08-12T17:00:18",
+      "revision": 2,
+      "revisiones": [
+        {
+          "revision": 1,
+          "sha256": "0b5dcfc5bfbcc0a3bb2afd370baaacc532194584b2111ef9116cef16eccc009e",
+          "bytes": 487368,
+          "publicado": "2026-08-12T15:32:58"
+        }
+      ],
       "verificacion": {
         "reglas": 13,
         "version_reglas": 1,
