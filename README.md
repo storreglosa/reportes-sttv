@@ -1,7 +1,7 @@
 # Reportes del área de gestión de movilidad – Valledupar
 
 Sitio de publicación de los reportes analíticos de tránsito y movilidad de la
-Secretaría de Tránsito y Transporte de Valledupar. Actualmente hay **2 reporte(s)** publicados.
+Secretaría de Tránsito y Transporte de Valledupar. Actualmente hay **3 reportes** publicados.
 
 👉 <https://storreglosa.github.io/reportes-sttv/>
 
