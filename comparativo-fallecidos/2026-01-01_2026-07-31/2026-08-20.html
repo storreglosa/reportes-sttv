@@ -10,20 +10,30 @@
 <meta name="sttv:hasta" content="2026-07-31">
 <meta name="sttv:fecha_corte" content="2026-08-20">
 <meta name="sttv:municipio" content="Valledupar">
-<meta name="sttv:generado" content="2026-08-20 11:12">
+<meta name="sttv:generado" content="2026-09-20 17:11">
 <meta name="sttv:generador" content="comparativo-fallecidos/1">
 <style>
 :root {
   --fondo: #f9f9f7; --superficie: #fcfcfb;
-  /* --tinta-3 pasó de #898781 a #736f68: el anterior daba 3,50:1 sobre
-     este fondo y no llegaba al 4,5:1 de WCAG AA. En tema oscuro el mismo
-     #898781 sí cumple (4,85:1), por eso allí no cambia. */
-  --tinta-1: #0b0b0b; --tinta-2: #52514e; --tinta-3: #736f68;
+  /* --tinta-3 es el gris de metadatos. Su ratio se mide contra el peor de
+     TODOS los fondos sobre los que llega a caer, no solo contra --fondo:
+     también sobre --superficie y los cuatro fondos suaves. #736f68 pasaba
+     sobre --fondo (4,87:1) pero caía a 4,34:1 sobre --heridos-suave.
+     #6b6760 da 4,88:1 en el peor caso. El equivalente oscuro, #898781,
+     caía a 4,28:1 sobre --ilesos-suave; #908e87 da 4,69:1. */
+  --tinta-1: #0b0b0b; --tinta-2: #52514e; --tinta-3: #6b6760;
   --malla: #e1e0d9; --base: #c3c2b7; --borde: rgba(11,11,11,0.10);
   --serie-1: #2a78d6; --serie-2: #eb6834;
-  --muertos: #d92b2b; --heridos: #2f56c9; --ilesos: #e0a100;
+  /* --ilesos carga doble restricción: es relleno de barra (>=3:1 contra
+     --fondo) y lleva texto --sobre-suave encima (>=4,5:1). #e0a100 daba
+     2,15:1 contra el fondo. #b37f00 da 3,35:1 contra el fondo y 5,58:1
+     contra el texto negro. Oscurecerlo más rompe el segundo lado. */
+  --muertos: #d92b2b; --heridos: #2f56c9; --ilesos: #b37f00;
   --muertos-suave: #fdecec; --heridos-suave: #eaeffb; --ilesos-suave: #fdf4e0;
-  --referencia: #b9b8b1; --mejora: #0a7d28;
+  /* --referencia rellena la barra de "Sin registrar". #b9b8b1 daba 1,89:1
+     contra --fondo: la barra se perdía en el papel. #8d8b82 da 3,24:1 y
+     conserva 5,76:1 con el texto negro que lleva encima. */
+  --referencia: #8d8b82; --mejora: #0a7d28;
   /* Actor vial: paleta institucional de la Secretaría. Es un degradado, no
      un set categórico —los cinco tonos quedan bajo el piso de saturación—,
      así que el orden evita que los dos pares más parecidos queden juntos y
@@ -39,10 +49,13 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --fondo: #0d0d0d; --superficie: #1a1a19;
-    --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #898781;
+    --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #908e87;
     --malla: #2c2c2a; --base: #383835; --borde: rgba(255,255,255,0.10);
     --serie-1: #3987e5; --serie-2: #d95926;
-    --muertos: #f0524f; --heridos: #6d8dee; --ilesos: #c98500;
+    /* En oscuro, --ilesos lleva texto BLANCO encima (--sobre-suave se
+       invierte con el tema). #c98500 solo le daba 3,07:1 al blanco.
+       #96630a da 5,14:1 al texto y 3,78:1 contra el lienzo. */
+    --muertos: #f0524f; --heridos: #6d8dee; --ilesos: #96630a;
     --muertos-suave: #35191a; --heridos-suave: #171d31; --ilesos-suave: #2c2410;
     --referencia: #6b6a64; --mejora: #35c25a;
     --actor-1: #4f8fbd; --actor-2: #7c9885; --actor-3: #4d99a3;
@@ -58,10 +71,10 @@
 }
 :root[data-theme="dark"] {
   --fondo: #0d0d0d; --superficie: #1a1a19;
-  --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #898781;
+  --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #908e87;
   --malla: #2c2c2a; --base: #383835; --borde: rgba(255,255,255,0.10);
   --serie-1: #3987e5; --serie-2: #d95926;
-  --muertos: #f0524f; --heridos: #6d8dee; --ilesos: #c98500;
+  --muertos: #f0524f; --heridos: #6d8dee; --ilesos: #96630a;
   --muertos-suave: #35191a; --heridos-suave: #171d31; --ilesos-suave: #2c2410;
   --referencia: #6b6a64; --mejora: #35c25a;
   --actor-1: #4f8fbd; --actor-2: #7c9885; --actor-3: #4d99a3;
@@ -86,8 +99,12 @@ nav.indice {
   padding: 1.6rem 1rem; border-right: 1px solid var(--borde);
   background: var(--superficie);
 }
-nav.indice .marca { font-size: .72rem; letter-spacing: .09em; text-transform: uppercase;
+nav.indice .marca { font-size: .75rem; letter-spacing: .09em; text-transform: uppercase;
   color: var(--tinta-3); margin-bottom: 1.1rem; }
+/* El periodo es un dato, no una etiqueta: en versalitas se lee peor y no gana
+   nada. La marca de encima sí las conserva, que para eso es corta. */
+nav.indice .marca .periodo { display: block; text-transform: none;
+  letter-spacing: 0; margin-top: .2rem; }
 nav.indice a {
   display: block; padding: .38rem .5rem; margin-bottom: .1rem; border-radius: 6px;
   color: var(--tinta-2); text-decoration: none; font-size: .84rem;
@@ -103,8 +120,6 @@ main { flex: 1 1 auto; min-width: 0; padding: 0 2.2rem 6rem; max-width: 1080px; 
 section { padding: 3.4rem 0 1rem; border-bottom: 1px solid var(--borde); scroll-margin-top: 1rem; }
 section:last-child { border-bottom: none; }
 
-.rotulo { font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--tinta-3); margin-bottom: .5rem; }
 h1 { font-size: 2.4rem; line-height: 1.15; margin: .2rem 0 .8rem; letter-spacing: -.02em; }
 h2 { font-size: 1.6rem; line-height: 1.2; margin: .2rem 0 .7rem; letter-spacing: -.01em; }
 h3 { font-size: 1rem; margin: 1.8rem 0 .6rem; color: var(--tinta-1); }
@@ -121,7 +136,7 @@ strong { color: var(--tinta-1); font-weight: 650; }
   letter-spacing: -.025em; }
 .tarjeta .rot { font-size: .8rem; color: var(--tinta-2); margin-top: .1rem;
   font-weight: 560; }
-.tarjeta .pie { font-size: .72rem; color: var(--tinta-3); margin-top: .25rem; }
+.tarjeta .pie { font-size: .78rem; color: var(--tinta-3); margin-top: .25rem; }
 .tarjeta .icono { flex: none; margin-top: .18rem; color: var(--tinta-3); }
 /* Las variantes de gravedad llevan el color del Observatorio: el rojo y el
    índigo son los que los agentes ya asocian con muertos y heridos. */
@@ -178,29 +193,39 @@ details.tabla .contenido { margin-top: .6rem; overflow-x: auto; }
 .portada { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
   gap: 1.8rem; align-items: start; }
 .portada .marca-sttv { max-width: 260px; width: 100%; height: auto; margin-bottom: 1.1rem; }
+/* El logo es un PNG con el texto en negro. Sobre el lienzo oscuro se pierde
+   —se ve al capturarlo en el navegador, no lo detecta un analizador de CSS—,
+   así que en tema oscuro se le pone una placa clara detrás. El escudo no se
+   altera ni se recolorea: se le da un fondo donde apoyarse. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .portada .marca-sttv {
+    background: #f2f2ef; padding: .7rem .9rem; border-radius: 10px; }
+}
+:root[data-theme="dark"] .portada .marca-sttv {
+  background: #f2f2ef; padding: .7rem .9rem; border-radius: 10px; }
 .portada .tarjetas { flex-direction: column; gap: .6rem; }
 .portada .tarjeta { flex: none; }
 #mapa-portada { height: 520px; border-radius: 12px; border: 1px solid var(--borde);
   background: var(--malla); position: sticky; top: 1rem; }
-.pie-mapa { font-size: .74rem; color: var(--tinta-3); margin-top: .45rem; }
+.pie-mapa { font-size: .78rem; color: var(--tinta-3); margin-top: .45rem; }
 .tabla-popup { border-collapse: collapse; font-size: .8rem; }
 .tabla-popup td { padding: .22rem .5rem; border: none; color: #1a1a1a; }
 .tabla-popup td:first-child { background: #f3f2ef; font-weight: 600; white-space: nowrap; }
 .leaflet-popup-content-wrapper { border-radius: 8px; }
 .alcance { display: flex; gap: .6rem; align-items: flex-start; margin: 1.3rem 0 .6rem;
   padding: .7rem .9rem; border-radius: 10px; background: var(--aviso);
-  border-left: 3px solid var(--aviso-borde); font-size: .88rem; color: var(--tinta-2);
+  border: 1px solid var(--aviso-borde); font-size: .88rem; color: var(--tinta-2);
   max-width: 74ch; }
 .alcance .icono { flex: none; color: var(--aviso-borde); margin-top: .12rem; }
 .fuente { font-size: .78rem; color: var(--tinta-3); }
-.aviso { background: var(--aviso); border-left: 3px solid var(--aviso-borde);
-  border-radius: 0 8px 8px 0; padding: .85rem 1.1rem; margin: 1.2rem 0; }
+.aviso { background: var(--aviso); border: 1px solid var(--aviso-borde);
+  border-radius: 8px; padding: .85rem 1.1rem; margin: 1.2rem 0; }
 .aviso p:last-child { margin-bottom: 0; }
 .aviso .tit { font-weight: 640; color: var(--tinta-1); margin-bottom: .25rem;
   font-size: .92rem; }
 
 ul.hallazgos { list-style: none; padding: 0; margin: 1rem 0; }
-ul.hallazgos li { border-left: 2px solid var(--base); padding: .1rem 0 .1rem .9rem;
+ul.hallazgos li { border-left: 1px solid var(--borde); padding: .1rem 0 .1rem .9rem;
   margin-bottom: 1rem; }
 ul.hallazgos .tit { font-weight: 620; color: var(--tinta-1); display: block;
   margin-bottom: .15rem; }
@@ -249,7 +274,7 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
 <div class="disposicion">
   <nav class="indice">
     <div class="marca">Fallecidos<br>Ene–Jul 2026</div>
-    <a href="#portada"><span class="n">01</span>Portada</a><a href="#contraste"><span class="n">02</span>Antes de comparar</a><a href="#balance"><span class="n">03</span>El balance</a><a href="#serie"><span class="n">04</span>Mes a mes</a><a href="#usuario"><span class="n">05</span>El perfil</a><a href="#seguimiento"><span class="n">06</span>El mes en curso</a><a href="#limitaciones"><span class="n">07</span>Los límites</a><a href="#ficha"><span class="n">08</span>La ficha</a>
+    <a href="#portada"><span class="n">01</span>Portada</a><a href="#contraste"><span class="n">02</span>Qué separa a las dos fuentes</a><a href="#balance"><span class="n">03</span>Fallecidos por zona</a><a href="#serie"><span class="n">04</span>Evolución del tramo comparable</a><a href="#usuario"><span class="n">05</span>Quién muere, por zona</a><a href="#seguimiento"><span class="n">06</span>Seguimiento del mes en curso</a><a href="#limitaciones"><span class="n">07</span>Lo que este dato no permite</a><a href="#ficha"><span class="n">08</span>Fuentes y método</a>
   </nav>
   <main>
     
@@ -271,8 +296,8 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
   <div class="aviso"><div class="tit">Las tres cifras no salen de la misma fuente</div><p>Las de 2024 y 2025 vienen del tablero de la Agencia Nacional de Seguridad Vial, construido sobre registros del Instituto Nacional de Medicina Legal. La de 2026 sale de la capa de siniestralidad de esta Secretaría, alimentada por los Agentes de Tránsito. Son universos distintos y la diferencia entre ambos está medida en la sección siguiente: <b>no es válido restar una de otra sin leerla</b>.</p></div>
   <p class="fuente">Corte de la capa: 2026-08-20 ·
      último hecho registrado: 2026-08-17 ·
-     documento generado el 2026-08-20 11:12</p>
-</section><section id="contraste"><div class="rotulo">Antes de comparar</div><h2>Qué separa a las dos fuentes</h2>
+     documento generado el 2026-09-20 17:11</p>
+</section><section id="contraste"><h2>Qué separa a las dos fuentes</h2>
   <p>2024 y 2025 ya cerraron en las dos fuentes, así que se pueden poner una
      al lado de la otra en el mismo tramo enero–julio. Eso mide la distancia
      entre instrumentos, que es la holgura con la que hay que leer la cifra
@@ -282,7 +307,7 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
      9 fallecidos menos en 2024 y 3 fallecidos menos en 2025,
      es decir entre 5,8 % y 18,4 % de
      diferencia. La brecha <b>no es siempre en el mismo sentido</b>: en la zona rural de 2025 registró 2 más que la ANSV, y en agosto de 2025 la capa registró 9 contra 8 de la ANSV. Por eso no se corrige la cifra de 2026 con un factor: no hay un sesgo estable que corregir, hay dos universos que no coinciden.</p>
-  <div class="aviso"><div class="tit">Cómo leer la cifra del año en curso</div><p>Los 47 fallecidos que la capa registra en 2026 son <b>los que llegaron al registro de la Secretaría</b>. Si la brecha de los dos años anteriores se mantuviera, la cifra que publicará la ANSV para este mismo tramo sería mayor. El documento no la estima: la declara pendiente.</p></div></section><section id="balance"><div class="rotulo">El balance</div><h2>Fallecidos por zona</h2>
+  <div class="aviso"><div class="tit">Cómo leer la cifra del año en curso</div><p>Los 47 fallecidos que la capa registra en 2026 son <b>los que llegaron al registro de la Secretaría</b>. Si la brecha de los dos años anteriores se mantuviera, la cifra que publicará la ANSV para este mismo tramo sería mayor. El documento no la estima: la declara pendiente.</p></div></section><section id="balance"><h2>Fallecidos por zona</h2>
   <p>Entre enero y julio de 2026 murieron
      <b>47 personas</b> en siniestros viales de
      Valledupar según el registro de la Secretaría,
@@ -291,14 +316,14 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
   <table><thead><tr><th class="">Zona</th><th class="n">2024 (ANSV)</th><th class="n">2025 (ANSV)</th><th class="n">2026 (capa STTV)</th><th class="">Frente a 2025</th></tr></thead><tbody><tr><td class="">Urbana</td><td class="n">34</td><td class="n">40</td><td class="n">35</td><td class="">−5 frente a 40</td></tr><tr><td class="">Rural</td><td class="n">15</td><td class="n">12</td><td class="n">12</td><td class="">sin cambio</td></tr><tr class="destacada"><td class="">Total</td><td class="n">49</td><td class="n">52</td><td class="n">47</td><td class="">−5 frente a 52</td></tr></tbody></table>
   <p class="fuente">La fila «Total» es el municipio completo. Urbana + rural
      puede no sumar el total si algún siniestro quedó sin zona registrada:
-     en este corte no ocurre.</p></section><section id="serie"><div class="rotulo">Mes a mes</div><h2>Evolución del tramo comparable</h2>
+     en este corte no ocurre.</p></section><section id="serie"><h2>Evolución del tramo comparable</h2>
   <p>Los meses de 2026 se comparan contra los mismos meses de
      los años de referencia. Las barras de 2024 y 2025 se leyeron del gráfico
      mensual del tablero de la ANSV.</p>
   <div class="leyenda"><span><i class="pastilla" style="background:var(--referencia)"></i>2024 · ANSV</span><span><i class="pastilla" style="background:var(--base)"></i>2025 · ANSV</span><span><i class="pastilla" style="background:var(--muertos)"></i>2026 · capa STTV</span></div>
   <svg viewBox="0 0 680 240" class="grafico" role="img" preserveAspectRatio="xMinYMin meet" aria-label="Fallecidos por mes — municipio completo"><title>Fallecidos por mes — municipio completo</title><line x1="46" y1="200" x2="674" y2="200" class="base"/><text x="38.0" y="204.0" class="t-eje" text-anchor="end" font-size="11">0</text><line x1="46" y1="113.0" x2="674" y2="113.0" class="malla"/><text x="38.0" y="117.0" class="t-eje" text-anchor="end" font-size="11">6</text><line x1="46" y1="26.0" x2="674" y2="26.0" class="malla"/><text x="38.0" y="30.0" class="t-eje" text-anchor="end" font-size="11">12</text><g class="marca"><title>2024 · ANSV · Ene: 11</title><path d="M54.4,200.0 V44.5 Q54.4,40.5 58.4,40.5 H72.4 Q76.4,40.5 76.4,44.5 V200.0 Z" fill="var(--referencia)"/><text x="65.4" y="34.5" class="t-valor" text-anchor="middle" font-size="11">11</text></g><g class="marca"><title>2025 · ANSV · Ene: 6</title><path d="M78.4,200.0 V117.0 Q78.4,113.0 82.4,113.0 H96.4 Q100.4,113.0 100.4,117.0 V200.0 Z" fill="var(--base)"/><text x="89.4" y="107.0" class="t-valor" text-anchor="middle" font-size="11">6</text></g><g class="marca"><title>2026 · capa STTV · Ene: 7</title><path d="M102.4,200.0 V102.5 Q102.4,98.5 106.4,98.5 H120.4 Q124.4,98.5 124.4,102.5 V200.0 Z" fill="var(--muertos)"/><text x="113.4" y="92.5" class="t-valor" text-anchor="middle" font-size="11">7</text></g><text x="90.4" y="216.0" class="t-eje" text-anchor="middle" font-size="11">Ene</text><g class="marca"><title>2024 · ANSV · Feb: 7</title><path d="M143.3,200.0 V102.5 Q143.3,98.5 147.3,98.5 H161.3 Q165.3,98.5 165.3,102.5 V200.0 Z" fill="var(--referencia)"/><text x="154.3" y="92.5" class="t-valor" text-anchor="middle" font-size="11">7</text></g><g class="marca"><title>2025 · ANSV · Feb: 8</title><path d="M167.3,200.0 V88.0 Q167.3,84.0 171.3,84.0 H185.3 Q189.3,84.0 189.3,88.0 V200.0 Z" fill="var(--base)"/><text x="178.3" y="78.0" class="t-valor" text-anchor="middle" font-size="11">8</text></g><g class="marca"><title>2026 · capa STTV · Feb: 8</title><path d="M191.3,200.0 V88.0 Q191.3,84.0 195.3,84.0 H209.3 Q213.3,84.0 213.3,88.0 V200.0 Z" fill="var(--muertos)"/><text x="202.3" y="78.0" class="t-valor" text-anchor="middle" font-size="11">8</text></g><text x="179.3" y="216.0" class="t-eje" text-anchor="middle" font-size="11">Feb</text><g class="marca"><title>2024 · ANSV · Mar: 10</title><path d="M232.1,200.0 V59.0 Q232.1,55.0 236.1,55.0 H250.1 Q254.1,55.0 254.1,59.0 V200.0 Z" fill="var(--referencia)"/><text x="243.1" y="49.0" class="t-valor" text-anchor="middle" font-size="11">10</text></g><g class="marca"><title>2025 · ANSV · Mar: 10</title><path d="M256.1,200.0 V59.0 Q256.1,55.0 260.1,55.0 H274.1 Q278.1,55.0 278.1,59.0 V200.0 Z" fill="var(--base)"/><text x="267.1" y="49.0" class="t-valor" text-anchor="middle" font-size="11">10</text></g><g class="marca"><title>2026 · capa STTV · Mar: 8</title><path d="M280.1,200.0 V88.0 Q280.1,84.0 284.1,84.0 H298.1 Q302.1,84.0 302.1,88.0 V200.0 Z" fill="var(--muertos)"/><text x="291.1" y="78.0" class="t-valor" text-anchor="middle" font-size="11">8</text></g><text x="268.1" y="216.0" class="t-eje" text-anchor="middle" font-size="11">Mar</text><g class="marca"><title>2024 · ANSV · Abr: 5</title><path d="M321.0,200.0 V131.5 Q321.0,127.5 325.0,127.5 H339.0 Q343.0,127.5 343.0,131.5 V200.0 Z" fill="var(--referencia)"/><text x="332.0" y="121.5" class="t-valor" text-anchor="middle" font-size="11">5</text></g><g class="marca"><title>2025 · ANSV · Abr: 9</title><path d="M345.0,200.0 V73.5 Q345.0,69.5 349.0,69.5 H363.0 Q367.0,69.5 367.0,73.5 V200.0 Z" fill="var(--base)"/><text x="356.0" y="63.5" class="t-valor" text-anchor="middle" font-size="11">9</text></g><g class="marca"><title>2026 · capa STTV · Abr: 7</title><path d="M369.0,200.0 V102.5 Q369.0,98.5 373.0,98.5 H387.0 Q391.0,98.5 391.0,102.5 V200.0 Z" fill="var(--muertos)"/><text x="380.0" y="92.5" class="t-valor" text-anchor="middle" font-size="11">7</text></g><text x="357.0" y="216.0" class="t-eje" text-anchor="middle" font-size="11">Abr</text><g class="marca"><title>2024 · ANSV · May: 6</title><path d="M409.9,200.0 V117.0 Q409.9,113.0 413.9,113.0 H427.9 Q431.9,113.0 431.9,117.0 V200.0 Z" fill="var(--referencia)"/><text x="420.9" y="107.0" class="t-valor" text-anchor="middle" font-size="11">6</text></g><g class="marca"><title>2025 · ANSV · May: 7</title><path d="M433.9,200.0 V102.5 Q433.9,98.5 437.9,98.5 H451.9 Q455.9,98.5 455.9,102.5 V200.0 Z" fill="var(--base)"/><text x="444.9" y="92.5" class="t-valor" text-anchor="middle" font-size="11">7</text></g><g class="marca"><title>2026 · capa STTV · May: 5</title><path d="M457.9,200.0 V131.5 Q457.9,127.5 461.9,127.5 H475.9 Q479.9,127.5 479.9,131.5 V200.0 Z" fill="var(--muertos)"/><text x="468.9" y="121.5" class="t-valor" text-anchor="middle" font-size="11">5</text></g><text x="445.9" y="216.0" class="t-eje" text-anchor="middle" font-size="11">May</text><g class="marca"><title>2024 · ANSV · Jun: 9</title><path d="M498.7,200.0 V73.5 Q498.7,69.5 502.7,69.5 H516.7 Q520.7,69.5 520.7,73.5 V200.0 Z" fill="var(--referencia)"/><text x="509.7" y="63.5" class="t-valor" text-anchor="middle" font-size="11">9</text></g><g class="marca"><title>2025 · ANSV · Jun: 6</title><path d="M522.7,200.0 V117.0 Q522.7,113.0 526.7,113.0 H540.7 Q544.7,113.0 544.7,117.0 V200.0 Z" fill="var(--base)"/><text x="533.7" y="107.0" class="t-valor" text-anchor="middle" font-size="11">6</text></g><g class="marca"><title>2026 · capa STTV · Jun: 7</title><path d="M546.7,200.0 V102.5 Q546.7,98.5 550.7,98.5 H564.7 Q568.7,98.5 568.7,102.5 V200.0 Z" fill="var(--muertos)"/><text x="557.7" y="92.5" class="t-valor" text-anchor="middle" font-size="11">7</text></g><text x="534.7" y="216.0" class="t-eje" text-anchor="middle" font-size="11">Jun</text><g class="marca"><title>2024 · ANSV · Jul: 1</title><path d="M587.6,200.0 V189.5 Q587.6,185.5 591.6,185.5 H605.6 Q609.6,185.5 609.6,189.5 V200.0 Z" fill="var(--referencia)"/><text x="598.6" y="179.5" class="t-valor" text-anchor="middle" font-size="11">1</text></g><g class="marca"><title>2025 · ANSV · Jul: 6</title><path d="M611.6,200.0 V117.0 Q611.6,113.0 615.6,113.0 H629.6 Q633.6,113.0 633.6,117.0 V200.0 Z" fill="var(--base)"/><text x="622.6" y="107.0" class="t-valor" text-anchor="middle" font-size="11">6</text></g><g class="marca"><title>2026 · capa STTV · Jul: 5</title><path d="M635.6,200.0 V131.5 Q635.6,127.5 639.6,127.5 H653.6 Q657.6,127.5 657.6,131.5 V200.0 Z" fill="var(--muertos)"/><text x="646.6" y="121.5" class="t-valor" text-anchor="middle" font-size="11">5</text></g><text x="623.6" y="216.0" class="t-eje" text-anchor="middle" font-size="11">Jul</text></svg>
   <details class="tabla"><summary>Ver la tabla del gráfico</summary><div class="contenido"><table><thead><tr><th class="">Mes</th><th class="n">2024 (ANSV)</th><th class="n">2025 (ANSV)</th><th class="n">2026 (capa STTV)</th></tr></thead><tbody><tr><td class="">Ene</td><td class="n">11</td><td class="n">6</td><td class="n">7</td></tr><tr><td class="">Feb</td><td class="n">7</td><td class="n">8</td><td class="n">8</td></tr><tr><td class="">Mar</td><td class="n">10</td><td class="n">10</td><td class="n">8</td></tr><tr><td class="">Abr</td><td class="n">5</td><td class="n">9</td><td class="n">7</td></tr><tr><td class="">May</td><td class="n">6</td><td class="n">7</td><td class="n">5</td></tr><tr><td class="">Jun</td><td class="n">9</td><td class="n">6</td><td class="n">7</td></tr><tr><td class="">Jul</td><td class="n">1</td><td class="n">6</td><td class="n">5</td></tr><tr><td class="">Total</td><td class="n">49</td><td class="n">52</td><td class="n">47</td></tr></tbody></table></div></details>
-  <div class="aviso"><div class="tit">Julio todavía puede subir</div><p>Los meses más recientes siguen recibiendo registros después de cerrados. Cuánto, está medido en la sección de seguimiento.</p></div></section><section id="usuario"><div class="rotulo">El perfil</div><h2>Quién muere, por zona</h2>
+  <div class="aviso"><div class="tit">Julio todavía puede subir</div><p>Los meses más recientes siguen recibiendo registros después de cerrados. Cuánto, está medido en la sección de seguimiento.</p></div></section><section id="usuario"><h2>Quién muere, por zona</h2>
   <p>La ANSV publica este desglose por zona, no para el municipio completo,
      así que las tablas van separadas. Una raya significa que esa fuente no
      reporta esa categoría; un cero significa que la reporta en cero.</p>
@@ -317,7 +342,7 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
      las dos fuentes cuentan distinto número de muertos, pero coinciden en
      quiénes eran. En zona rural la coincidencia es más floja, y con cifras
      de una y dos cifras cualquier caso mueve varios puntos porcentuales.</p>
-  <details class="tabla"><summary>Ver la calibración completa</summary><div class="contenido"><table><thead><tr><th class="">Año</th><th class="">Zona</th><th class="">Motociclistas ANSV</th><th class="n">% ANSV</th><th class="">Motociclistas capa</th><th class="n">% capa</th></tr></thead><tbody><tr><td class="">2024</td><td class="">Urbana</td><td class="">23 de 34</td><td class="n">67,6 %</td><td class="">20 de 28</td><td class="n">71,4 %</td></tr><tr><td class="">2024</td><td class="">Rural</td><td class="">8 de 15</td><td class="n">53,3 %</td><td class="">6 de 12</td><td class="n">50,0 %</td></tr><tr><td class="">2025</td><td class="">Urbana</td><td class="">29 de 40</td><td class="n">72,5 %</td><td class="">25 de 35</td><td class="n">71,4 %</td></tr><tr><td class="">2025</td><td class="">Rural</td><td class="">7 de 12</td><td class="n">58,3 %</td><td class="">9 de 14</td><td class="n">64,3 %</td></tr></tbody></table></div></details></section><section id="seguimiento"><div class="rotulo">El mes en curso</div><h2>Agosto de 2026: seguimiento provisional</h2>
+  <details class="tabla"><summary>Ver la calibración completa</summary><div class="contenido"><table><thead><tr><th class="">Año</th><th class="">Zona</th><th class="">Motociclistas ANSV</th><th class="n">% ANSV</th><th class="">Motociclistas capa</th><th class="n">% capa</th></tr></thead><tbody><tr><td class="">2024</td><td class="">Urbana</td><td class="">23 de 34</td><td class="n">67,6 %</td><td class="">20 de 28</td><td class="n">71,4 %</td></tr><tr><td class="">2024</td><td class="">Rural</td><td class="">8 de 15</td><td class="n">53,3 %</td><td class="">6 de 12</td><td class="n">50,0 %</td></tr><tr><td class="">2025</td><td class="">Urbana</td><td class="">29 de 40</td><td class="n">72,5 %</td><td class="">25 de 35</td><td class="n">71,4 %</td></tr><tr><td class="">2025</td><td class="">Rural</td><td class="">7 de 12</td><td class="n">58,3 %</td><td class="">9 de 14</td><td class="n">64,3 %</td></tr></tbody></table></div></details></section><section id="seguimiento"><h2>Agosto de 2026: seguimiento provisional</h2>
   <div class="tarjetas">
     <div class="tarjeta muertos"><svg class="icono " viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 3.5a1.6 1.6 0 1 0 0-.01M11.4 21l1.3-5.6-2.4-2.1-1 4.2M8 9.6 11 8a3 3 0 0 1 2.9.4l1.6 1.4 2.5.8M12.7 15.4 16 18l1.4 3"/></svg><div class="cuerpo"><div class="cifra">2</div><div class="rot">Fallecidos en agosto de 2026</div><div class="pie">2 urbana · 0 rural · dato incompleto</div></div></div>
     <div class="tarjeta"><svg class="icono " viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5v3m10-3v3M4 9.5h16M5.5 5.5h13a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V7a1.5 1.5 0 0 1 1.5-1.5"/></svg><div class="cuerpo"><div class="cifra">8</div><div class="rot">Agosto de 2025</div><div class="pie">mes completo · fuente ANSV</div></div></div><div class="tarjeta"><svg class="icono " viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5v3m10-3v3M4 9.5h16M5.5 5.5h13a1.5 1.5 0 0 1 1.5 1.5v12a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V7a1.5 1.5 0 0 1 1.5-1.5"/></svg><div class="cuerpo"><div class="cifra">3</div><div class="rot">Agosto de 2024</div><div class="pie">mes completo · fuente ANSV</div></div></div>
@@ -329,7 +354,7 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
      julio pasó de 2 a 5 casos entre el 2026-08-11 y el 2026-08-20, ya con el mes
      cerrado.</p>
   <table><thead><tr><th class="">Corte del snapshot</th><th class="n">Fallecidos 2026</th><th class="">Último hecho registrado</th><th class="n">Julio</th><th class="n">Agosto</th></tr></thead><tbody><tr><td class="">2026-07-19</td><td class="n">41</td><td class="">2026-06-15</td><td class="n">—</td><td class="n">—</td></tr><tr><td class="">2026-07-20</td><td class="n">41</td><td class="">2026-06-15</td><td class="n">—</td><td class="n">—</td></tr><tr><td class="">2026-08-11</td><td class="n">44</td><td class="">2026-07-17</td><td class="n">2</td><td class="n">—</td></tr><tr class="destacada"><td class="">2026-08-20</td><td class="n">49</td><td class="">2026-08-17</td><td class="n">5</td><td class="n">2</td></tr></tbody></table>
-  <p class="fuente">Entre los 4 cortes guardados cambiaron los meses de junio y julio; los otros 5 meses del tramo no se movieron. Un mes cerrado sigue recibiendo registros.</p></section><section id="limitaciones"><div class="rotulo">Los límites</div><h2>Lo que este dato todavía no permite</h2>
+  <p class="fuente">Entre los 4 cortes guardados cambiaron los meses de junio y julio; los otros 5 meses del tramo no se movieron. Un mes cerrado sigue recibiendo registros.</p></section><section id="limitaciones"><h2>Lo que este dato todavía no permite</h2>
   <h3>El objeto de colisión no se pudo comparar</h3>
   <p>La ANSV publica con qué chocó cada víctima. La capa de la Secretaría no
      tiene ese campo, así que hay que derivarlo cruzando la víctima con los
@@ -407,11 +432,11 @@ ul.hallazgos .det { font-size: .87rem; color: var(--tinta-2); }
         desglose se coteja contra el total que el propio tablero muestra en su
         tarjeta de resumen, y esa verificación corre como prueba automatizada.</li>
     
-  </ul></section><section id="ficha"><div class="rotulo">La ficha</div><h2>Fuentes y método</h2>
+  </ul></section><section id="ficha"><h2>Fuentes y método</h2>
   <table><thead><tr><th class=""></th><th class=""></th></tr></thead><tbody><tr><td class="">Años 2024 y 2025</td><td class="">Observatorio Nacional de Seguridad Vial — Agencia Nacional de Seguridad Vial (ANSV). Tablero «Personas fallecidas en siniestros viales». · corte del tablero 2025-12-31 · consultado el 2026-08-20</td></tr><tr><td class="">Fuente primaria de esos años</td><td class="">Instituto Nacional de Medicina Legal y Ciencias Forenses. Las cifras del tablero son PRELIMINARES y la ANSV las revisa en cortes posteriores.</td></tr><tr><td class="">Año en curso</td><td class="">Capa «Siniestralidad Valledupar» del portal ArcGIS Enterprise de la Secretaría de Tránsito y Transporte de Valledupar, alimentada por formulario Survey123 diligenciado por Agentes de Tránsito. Corte 2026-08-20.</td></tr><tr><td class="">Filtro territorial</td><td class="">Solo los siniestros cuyo municipio registrado es VALLEDUPAR. La capa guarda casos atendidos fuera de la jurisdicción y la consulta a la ANSV está filtrada a este municipio: sin el mismo filtro, la comparación restaría universos geográficos distintos. Los excluidos se declaran en la sección 7.</td></tr><tr><td class="">Universo</td><td class="">Personas fallecidas. Es lo único que ambas fuentes capturan con cobertura parecida: un fallecimiento deja rastro documental ineludible. Los siniestros y los lesionados NO se comparan entre fuentes.</td></tr><tr><td class="">Unidad de conteo</td><td class="">La persona, tomada de la tabla de víctimas (gravedad «Muerto»), no de los campos agregados del siniestro.</td></tr><tr><td class="">Tramo comparable</td><td class="">2026-01-01 a 2026-07-31. El corte en julio lo impone la fuente: Mes. El tablero no permite bajar a día, y por eso el tramo comparable con la capa propia se corta en meses completos.</td></tr><tr><td class="">Filtros de la consulta ANSV</td><td class="">departamento municipio: Cesar (Departamento) + Valledupar · region geografica: Todas · usuario via: Todas · sexo: Todas · curso de vida: Todas · tipo vehiculo: Todas · objeto colision: Todas · zona: Urbana / Rural (una consulta por cada una)</td></tr><tr><td class="">Naturaleza de las cifras de referencia</td><td class="">Preliminares. La ANSV las revisa en cortes posteriores, así que pueden cambiar.</td></tr><tr><td class="">Reproducibilidad</td><td class="">Todo el documento se regenera con el comando «python -m arcgis_manage.cli comparativo --fecha-corte 2026-08-20 --destino publico». Las cifras de la ANSV viven versionadas en el repositorio, en reports/ansv_valledupar.yaml.</td></tr></tbody></table>
   <div class="aviso"><div class="tit">Sobre los datos personales</div><p>Este documento publica únicamente cifras agregadas. No contiene nombres, documentos de identidad, placas ni la ubicación puntual de ningún siniestro.</p></div>
   <p class="fuente">Elaborado por la Secretaría de Tránsito y Transporte de
-     Valledupar. Generado el 2026-08-20 11:12 ·
+     Valledupar. Generado el 2026-09-20 17:11 ·
      generador <code>comparativo-fallecidos/1</code>.</p></section>
   </main>
 </div>

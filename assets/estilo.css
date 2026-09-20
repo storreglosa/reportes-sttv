@@ -1,23 +1,85 @@
 :root {
   --fondo: #f9f9f7; --superficie: #fcfcfb;
-  /* --tinta-3 es #736f68 y no el #898781 del reporte: aquel da 3.50:1
-     sobre este fondo y no llega al 4.5:1 que exige WCAG AA. Este es el
-     gris más claro de la misma familia que sí cumple (4.87:1), para no
-     perder el tono discreto de los metadatos. */
-  --tinta-1: #0b0b0b; --tinta-2: #52514e; --tinta-3: #736f68;
-  --malla: #e1e0d9; --borde: rgba(11,11,11,0.10);
-  --acento: #033f63; --acento-tinta: #ffffff;
+  /* --tinta-3 es el gris de metadatos. Su ratio se mide contra el peor de
+     TODOS los fondos sobre los que llega a caer, no solo contra --fondo:
+     también sobre --superficie y los cuatro fondos suaves. #736f68 pasaba
+     sobre --fondo (4,87:1) pero caía a 4,34:1 sobre --heridos-suave.
+     #6b6760 da 4,88:1 en el peor caso. El equivalente oscuro, #898781,
+     caía a 4,28:1 sobre --ilesos-suave; #908e87 da 4,69:1. */
+  --tinta-1: #0b0b0b; --tinta-2: #52514e; --tinta-3: #6b6760;
+  --malla: #e1e0d9; --base: #c3c2b7; --borde: rgba(11,11,11,0.10);
+  --serie-1: #2a78d6; --serie-2: #eb6834;
+  /* --ilesos carga doble restricción: es relleno de barra (>=3:1 contra
+     --fondo) y lleva texto --sobre-suave encima (>=4,5:1). #e0a100 daba
+     2,15:1 contra el fondo. #b37f00 da 3,35:1 contra el fondo y 5,58:1
+     contra el texto negro. Oscurecerlo más rompe el segundo lado. */
+  --muertos: #d92b2b; --heridos: #2f56c9; --ilesos: #b37f00;
+  --muertos-suave: #fdecec; --heridos-suave: #eaeffb; --ilesos-suave: #fdf4e0;
+  /* --referencia rellena la barra de "Sin registrar". #b9b8b1 daba 1,89:1
+     contra --fondo: la barra se perdía en el papel. #8d8b82 da 3,24:1 y
+     conserva 5,76:1 con el texto negro que lleva encima. */
+  --referencia: #8d8b82; --mejora: #0a7d28;
+  /* Actor vial: paleta institucional de la Secretaría. Es un degradado, no
+     un set categórico —los cinco tonos quedan bajo el piso de saturación—,
+     así que el orden evita que los dos pares más parecidos queden juntos y
+     cada barra lleva su valor impreso. */
+  --actor-1: #033f63; --actor-2: #7c9885; --actor-3: #28666e;
+  --actor-4: #fedc97; --actor-5: #b5b682;
+  --sec-100: #cde2fb; --sec-200: #9ec5f4; --sec-300: #6da7ec; --sec-400: #3987e5;
+  --sec-500: #256abf; --sec-600: #184f95; --sec-700: #0d366b;
+  --sobre-fuerte: #ffffff; --sobre-suave: #0b0b0b;
+  --aviso: #fff8e6; --aviso-borde: #eda100;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --fondo: #0d0d0d; --superficie: #1a1a19;
-    --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #898781;
-    --malla: #2c2c2a; --borde: rgba(255,255,255,0.10);
-    --acento: #cde2fb; --acento-tinta: #0b0b0b;
+    --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #908e87;
+    --malla: #2c2c2a; --base: #383835; --borde: rgba(255,255,255,0.10);
+    --serie-1: #3987e5; --serie-2: #d95926;
+    /* En oscuro, --ilesos lleva texto BLANCO encima (--sobre-suave se
+       invierte con el tema). #c98500 solo le daba 3,07:1 al blanco.
+       #96630a da 5,14:1 al texto y 3,78:1 contra el lienzo. */
+    --muertos: #f0524f; --heridos: #6d8dee; --ilesos: #96630a;
+    --muertos-suave: #35191a; --heridos-suave: #171d31; --ilesos-suave: #2c2410;
+    --referencia: #6b6a64; --mejora: #35c25a;
+    --actor-1: #4f8fbd; --actor-2: #7c9885; --actor-3: #4d99a3;
+    --actor-4: #d7b26a; --actor-5: #b5b682;
+    /* La rampa se invierte: en fondo oscuro la magnitud crece hacia el
+       claro, para que "más" siga siendo "más contraste con el fondo". */
+    --sec-100: #184f95; --sec-200: #256abf; --sec-300: #2a78d6; --sec-400: #3987e5;
+    --sec-500: #6da7ec; --sec-600: #9ec5f4; --sec-700: #cde2fb;
+    --sobre-fuerte: #0b0b0b; --sobre-suave: #ffffff;
+    --aviso: #2a2410; --aviso-borde: #c98500;
     color-scheme: dark;
   }
 }
+:root[data-theme="dark"] {
+  --fondo: #0d0d0d; --superficie: #1a1a19;
+  --tinta-1: #ffffff; --tinta-2: #c3c2b7; --tinta-3: #908e87;
+  --malla: #2c2c2a; --base: #383835; --borde: rgba(255,255,255,0.10);
+  --serie-1: #3987e5; --serie-2: #d95926;
+  --muertos: #f0524f; --heridos: #6d8dee; --ilesos: #96630a;
+  --muertos-suave: #35191a; --heridos-suave: #171d31; --ilesos-suave: #2c2410;
+  --referencia: #6b6a64; --mejora: #35c25a;
+  --actor-1: #4f8fbd; --actor-2: #7c9885; --actor-3: #4d99a3;
+  --actor-4: #d7b26a; --actor-5: #b5b682;
+  --sec-100: #184f95; --sec-200: #256abf; --sec-300: #2a78d6; --sec-400: #3987e5;
+  --sec-500: #6da7ec; --sec-600: #9ec5f4; --sec-700: #cde2fb;
+  --sobre-fuerte: #0b0b0b; --sobre-suave: #ffffff;
+  --aviso: #2a2410; --aviso-borde: #c98500;
+  color-scheme: dark;
+}
+
+/* Tokens propios del índice: el acento institucional, que no aparece en los
+   reportes. 11,08:1 con su tinta en claro; 14,87:1 en oscuro. El resto de la
+   paleta viene de tokens.py —antes estaba copiada aquí y ya había divergido
+   del reporte en --tinta-3. */
+:root { --acento: #033f63; --acento-tinta: #ffffff; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --acento: #cde2fb; --acento-tinta: #0b0b0b; }
+}
+:root[data-theme="dark"] { --acento: #cde2fb; --acento-tinta: #0b0b0b; }
 * { box-sizing: border-box; }
 /* Enlace de salto: invisible hasta que se tabula, que es cuando sirve. */
 .salto {
@@ -36,6 +98,16 @@ body {
 header { border-bottom: 2px solid var(--malla); padding-bottom: 1.5rem; margin-bottom: 2rem; }
 .marca { display: flex; align-items: center; gap: .9rem; margin-bottom: 1.25rem; }
 .marca img { height: 52px; width: auto; }
+/* El logo es un PNG con el texto en negro. Sobre el lienzo oscuro se pierde
+   —se ve al capturarlo en el navegador, no lo detecta un analizador de CSS—,
+   así que en tema oscuro se le pone una placa clara detrás. El escudo no se
+   altera ni se recolorea: se le da un fondo donde apoyarse. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .marca img {
+    background: #f2f2ef; padding: .45rem .6rem; border-radius: 8px; }
+}
+:root[data-theme="dark"] .marca img {
+  background: #f2f2ef; padding: .45rem .6rem; border-radius: 8px; }
 h1 { font-size: 1.75rem; line-height: 1.2; margin: 0 0 .4rem; letter-spacing: -.01em; }
 h2 { font-size: 1.2rem; margin: 2.5rem 0 .75rem; }
 .entrada { color: var(--tinta-2); margin: 0; max-width: 46rem; }
