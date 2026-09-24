@@ -1,6 +1,6 @@
 {
   "esquema": 1,
-  "generado": "2026-09-20T17:19:47",
+  "generado": "2026-09-24T12:07:39",
   "entradas": [
     {
       "id": "comparativo-fallecidos/2026-01-01_2026-07-31/2026-08-20",
@@ -24,12 +24,12 @@
       "municipio": "Valledupar",
       "modulo": "publico",
       "ruta": "comparativo-fallecidos/2026-01-01_2026-07-31/2026-08-20.html",
-      "sha256": "6d4c1db4166284bc3f631ef411ed89b9959015ce54920037eb6d5fac5ba85b79",
-      "bytes": 149489,
+      "sha256": "298c96e6b1d9b5dbe5cc1192bdab1de4996c8f9fcd16405141b3a135d5c74d22",
+      "bytes": 250192,
       "generador": "comparativo-fallecidos/1",
-      "generado": "2026-09-20 17:11",
-      "publicado": "2026-09-20T17:19:45",
-      "revision": 3,
+      "generado": "2026-09-24 12:02",
+      "publicado": "2026-09-24T12:07:38",
+      "revision": 4,
       "revisiones": [
         {
           "revision": 1,
@@ -42,11 +42,17 @@
           "sha256": "ece97ca026e7ac021448b262be5f5e88798e3741f7183afedac557e3ab16f4f5",
           "bytes": 148029,
           "publicado": "2026-08-20T11:12:03"
+        },
+        {
+          "revision": 3,
+          "sha256": "6d4c1db4166284bc3f631ef411ed89b9959015ce54920037eb6d5fac5ba85b79",
+          "bytes": 149489,
+          "publicado": "2026-09-20T17:19:45"
         }
       ],
       "verificacion": {
         "reglas": 13,
-        "version_reglas": 2,
+        "version_reglas": 3,
         "resultado": "limpio",
         "excepciones": []
       }
@@ -73,12 +79,12 @@
       "municipio": "VALLEDUPAR",
       "modulo": "publico",
       "ruta": "siniestralidad/2026-01-01_2026-06-30/2026-08-11.html",
-      "sha256": "ffc8c01f0703636288e69556a8e7b04eebc0d39524d5f8e2c981ed8b756858e0",
-      "bytes": 488944,
+      "sha256": "5796e697f080df430da1b49597fc9634b3e0ac998886864308f19fe9c9dd3b69",
+      "bytes": 624304,
       "generador": "presentacion/1",
-      "generado": "2026-09-20 16:29",
-      "publicado": "2026-09-20T17:19:47",
-      "revision": 3,
+      "generado": "2026-09-24 12:01",
+      "publicado": "2026-09-24T12:07:38",
+      "revision": 4,
       "revisiones": [
         {
           "revision": 1,
@@ -91,11 +97,17 @@
           "sha256": "fe94cc827cc95dd4e17c48eaee36e79a3ae6657b41857d59ef280c1e87d58d66",
           "bytes": 487604,
           "publicado": "2026-08-12T17:00:18"
+        },
+        {
+          "revision": 3,
+          "sha256": "ffc8c01f0703636288e69556a8e7b04eebc0d39524d5f8e2c981ed8b756858e0",
+          "bytes": 488944,
+          "publicado": "2026-09-20T17:19:47"
         }
       ],
       "verificacion": {
         "reglas": 13,
-        "version_reglas": 2,
+        "version_reglas": 3,
         "resultado": "limpio",
         "excepciones": []
       }
@@ -127,23 +139,29 @@
       "municipio": "VALLEDUPAR",
       "modulo": "publico",
       "ruta": "siniestralidad/2026-01-01_2026-08-18/2026-08-20.html",
-      "sha256": "12161203e4fcd92adf7f15e1e61f174084822f5e7b68a19377edbdc7d5656f08",
-      "bytes": 459627,
+      "sha256": "fdf809143935a535b1f4321a1da2fefdc48b62cbc107fd18360ef1760fe45bbd",
+      "bytes": 600311,
       "generador": "presentacion/1",
-      "generado": "2026-09-20 16:27",
-      "publicado": "2026-09-20T17:19:11",
-      "revision": 2,
+      "generado": "2026-09-24 12:01",
+      "publicado": "2026-09-24T12:07:38",
+      "revision": 3,
       "revisiones": [
         {
           "revision": 1,
           "sha256": "3084ba9e817b9e7e60e326a38df4c7ad4f4576f0a8fb1e2e4df1f5cb6c2730d5",
           "bytes": 458255,
           "publicado": "2026-08-20T09:00:29"
+        },
+        {
+          "revision": 2,
+          "sha256": "12161203e4fcd92adf7f15e1e61f174084822f5e7b68a19377edbdc7d5656f08",
+          "bytes": 459627,
+          "publicado": "2026-09-20T17:19:11"
         }
       ],
       "verificacion": {
         "reglas": 13,
-        "version_reglas": 2,
+        "version_reglas": 3,
         "resultado": "limpio",
         "excepciones": []
       }
