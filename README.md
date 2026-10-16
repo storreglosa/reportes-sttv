@@ -22,6 +22,17 @@ vehículo. Cada uno pasa por una verificación automática antes de copiarse a e
 repositorio, y su ficha metodológica declara el alcance y los límites de sus
 cifras.
 
+Desde el 16 de octubre de 2026 los reportes de siniestralidad se publican
+agregados: no muestran siniestros individuales (ni puntos, ni fechas, horas o
+direcciones de los hechos), solo concentraciones nombradas y dibujadas en la
+intersección más cercana.
+
+## Retención
+
+Cuando un documento se reemplaza por una revisión, el archivo anterior sale del
+sitio y su SHA-256 queda en `manifiesto.json` (campo `revisiones`) como
+constancia de lo que estuvo publicado.
+
 ## Contenido generado
 
 Este repositorio se actualiza por herramienta, no a mano: los archivos se

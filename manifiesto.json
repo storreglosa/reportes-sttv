@@ -1,6 +1,6 @@
 {
   "esquema": 1,
-  "generado": "2026-09-24T12:07:39",
+  "generado": "2026-10-16T12:17:55",
   "entradas": [
     {
       "id": "comparativo-fallecidos/2026-01-01_2026-07-31/2026-08-20",
@@ -79,12 +79,12 @@
       "municipio": "VALLEDUPAR",
       "modulo": "publico",
       "ruta": "siniestralidad/2026-01-01_2026-06-30/2026-08-11.html",
-      "sha256": "5796e697f080df430da1b49597fc9634b3e0ac998886864308f19fe9c9dd3b69",
-      "bytes": 624304,
-      "generador": "presentacion/1",
-      "generado": "2026-09-24 12:01",
-      "publicado": "2026-09-24T12:07:38",
-      "revision": 4,
+      "sha256": "35bb014d9e3799133c6d3cbbf8ea7b7e5689811c688a68a3b6f29830067ac8b1",
+      "bytes": 581776,
+      "generador": "presentacion/2",
+      "generado": "2026-10-16 11:41",
+      "publicado": "2026-10-16T12:17:53",
+      "revision": 5,
       "revisiones": [
         {
           "revision": 1,
@@ -103,11 +103,17 @@
           "sha256": "ffc8c01f0703636288e69556a8e7b04eebc0d39524d5f8e2c981ed8b756858e0",
           "bytes": 488944,
           "publicado": "2026-09-20T17:19:47"
+        },
+        {
+          "revision": 4,
+          "sha256": "5796e697f080df430da1b49597fc9634b3e0ac998886864308f19fe9c9dd3b69",
+          "bytes": 624304,
+          "publicado": "2026-09-24T12:07:38"
         }
       ],
       "verificacion": {
-        "reglas": 13,
-        "version_reglas": 3,
+        "reglas": 20,
+        "version_reglas": 5,
         "resultado": "limpio",
         "excepciones": []
       }
@@ -139,12 +145,12 @@
       "municipio": "VALLEDUPAR",
       "modulo": "publico",
       "ruta": "siniestralidad/2026-01-01_2026-08-18/2026-08-20.html",
-      "sha256": "fdf809143935a535b1f4321a1da2fefdc48b62cbc107fd18360ef1760fe45bbd",
-      "bytes": 600311,
-      "generador": "presentacion/1",
-      "generado": "2026-09-24 12:01",
-      "publicado": "2026-09-24T12:07:38",
-      "revision": 3,
+      "sha256": "76241cc40d48613d6613f3e2473372c140740dc3250c607e89d9d7f3a5711b83",
+      "bytes": 544092,
+      "generador": "presentacion/2",
+      "generado": "2026-10-16 11:41",
+      "publicado": "2026-10-16T12:17:55",
+      "revision": 4,
       "revisiones": [
         {
           "revision": 1,
@@ -157,11 +163,17 @@
           "sha256": "12161203e4fcd92adf7f15e1e61f174084822f5e7b68a19377edbdc7d5656f08",
           "bytes": 459627,
           "publicado": "2026-09-20T17:19:11"
+        },
+        {
+          "revision": 3,
+          "sha256": "fdf809143935a535b1f4321a1da2fefdc48b62cbc107fd18360ef1760fe45bbd",
+          "bytes": 600311,
+          "publicado": "2026-09-24T12:07:38"
         }
       ],
       "verificacion": {
-        "reglas": 13,
-        "version_reglas": 3,
+        "reglas": 20,
+        "version_reglas": 5,
         "resultado": "limpio",
         "excepciones": []
       }
