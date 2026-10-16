@@ -1,6 +1,6 @@
 {
   "esquema": 1,
-  "generado": "2026-10-16T12:17:55",
+  "generado": "2026-10-16T15:04:50",
   "entradas": [
     {
       "id": "comparativo-fallecidos/2026-01-01_2026-07-31/2026-08-20",
@@ -24,12 +24,12 @@
       "municipio": "Valledupar",
       "modulo": "publico",
       "ruta": "comparativo-fallecidos/2026-01-01_2026-07-31/2026-08-20.html",
-      "sha256": "298c96e6b1d9b5dbe5cc1192bdab1de4996c8f9fcd16405141b3a135d5c74d22",
-      "bytes": 250192,
-      "generador": "comparativo-fallecidos/1",
-      "generado": "2026-09-24 12:02",
-      "publicado": "2026-09-24T12:07:38",
-      "revision": 4,
+      "sha256": "0efabc7ee6f15be0ae94ad158f840f7bf6f8a949c984116a51ca48e75dd9bdee",
+      "bytes": 250944,
+      "generador": "comparativo-fallecidos/2",
+      "generado": "2026-10-16 15:03",
+      "publicado": "2026-10-16T15:04:50",
+      "revision": 5,
       "revisiones": [
         {
           "revision": 1,
@@ -48,11 +48,17 @@
           "sha256": "6d4c1db4166284bc3f631ef411ed89b9959015ce54920037eb6d5fac5ba85b79",
           "bytes": 149489,
           "publicado": "2026-09-20T17:19:45"
+        },
+        {
+          "revision": 4,
+          "sha256": "298c96e6b1d9b5dbe5cc1192bdab1de4996c8f9fcd16405141b3a135d5c74d22",
+          "bytes": 250192,
+          "publicado": "2026-09-24T12:07:38"
         }
       ],
       "verificacion": {
-        "reglas": 13,
-        "version_reglas": 3,
+        "reglas": 20,
+        "version_reglas": 5,
         "resultado": "limpio",
         "excepciones": []
       }
